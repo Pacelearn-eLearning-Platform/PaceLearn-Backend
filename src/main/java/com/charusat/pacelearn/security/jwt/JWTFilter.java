@@ -6,6 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
@@ -30,11 +32,22 @@ public class JWTFilter extends GenericFilterBean {
         throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         String jwt = resolveToken(httpServletRequest);
+        System.out.println("HAHAHA in filter");
         if (StringUtils.hasText(jwt) && this.tokenProvider.validateToken(jwt)) {
             Authentication authentication = this.tokenProvider.getAuthentication(jwt);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-        filterChain.doFilter(servletRequest, servletResponse);
+//        final HttpServletResponse response = (HttpServletResponse) servletResponse;
+//        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+//        response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
+//        response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type");
+//        response.setHeader("Access-Control-Max-Age", "3600");
+//        if ("OPTIONS".equalsIgnoreCase(((HttpServletRequest) servletRequest).getMethod())) {
+//            response.setStatus(HttpServletResponse.SC_OK);
+//        }else{
+            filterChain.doFilter(servletRequest, servletResponse);
+
+//        }
     }
 
     private String resolveToken(HttpServletRequest request) {

@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.charusat.pacelearn.security.jwt.JWTFilter;
 import com.charusat.pacelearn.security.jwt.TokenProvider;
 import com.charusat.pacelearn.web.rest.vm.LoginVM;
+
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserJWTController {
 
     private final TokenProvider tokenProvider;
@@ -64,6 +67,8 @@ public class UserJWTController {
         System.out.println("HAHA in authenticate api endpoint3");
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+//        httpHeaders.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,"http://localhost:3000");
+//        httpHeaders.add(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS,"Content-Type");
         return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
     }
 

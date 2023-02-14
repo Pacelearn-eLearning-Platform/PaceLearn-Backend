@@ -58,12 +58,17 @@ public class AccountResource {
      */
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
+    public ResponseEntity<Map<String,String>> registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
         if (isPasswordLengthInvalid(managedUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
         mailService.sendActivationEmail(user);
+
+        HashMap<String,String> responseBody = new HashMap<>();
+        responseBody.put("message","Registered Successfully, please check your email and verify your account before login");
+
+        return new ResponseEntity<>(responseBody,HttpStatus.OK);
     }
 
     /**

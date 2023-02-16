@@ -3,6 +3,7 @@ package com.charusat.pacelearn.web.rest;
 import com.charusat.pacelearn.domain.Course;
 import com.charusat.pacelearn.domain.User;
 import com.charusat.pacelearn.repository.CourseRepository;
+import com.charusat.pacelearn.security.AuthoritiesConstants;
 import com.charusat.pacelearn.service.CourseQueryService;
 import com.charusat.pacelearn.service.CourseService;
 import com.charusat.pacelearn.service.criteria.CourseCriteria;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -286,6 +288,7 @@ public class CourseResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)}.
      */
     @PostMapping(value = "/courses/enroll", consumes = MediaType.TEXT_PLAIN_VALUE)
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.STUDENT + "\")")
     public ResponseEntity enrollInCourse(@RequestBody String courseId) {
         log.debug("REST request to enroll in Course : {}", courseId);
         return courseService.enrollInCourse(courseId);

@@ -35,6 +35,7 @@ public class JWTFilter extends GenericFilterBean {
         System.out.println("HAHAHA in filter");
         if (StringUtils.hasText(jwt) && this.tokenProvider.validateToken(jwt)) {
             Authentication authentication = this.tokenProvider.getAuthentication(jwt);
+            System.out.println("In doFilter if part");
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 //        final HttpServletResponse response = (HttpServletResponse) servletResponse;
@@ -46,7 +47,7 @@ public class JWTFilter extends GenericFilterBean {
 //            response.setStatus(HttpServletResponse.SC_OK);
 //        }else{
             filterChain.doFilter(servletRequest, servletResponse);
-
+            System.out.println("Outside of doFilter if part");
 //        }
     }
 

@@ -283,6 +283,7 @@ public class CourseServiceImpl implements CourseService {
     public ResponseEntity enrollInCourse(String courseId) {
         AtomicBoolean flag = new AtomicBoolean(false);
         Map<String, String> body = new HashMap<>();
+        System.out.println("In enrollInCourse function");
         body.put("Success", "Data Entered Successfully");
         try {
             courseRepository
@@ -301,9 +302,13 @@ public class CourseServiceImpl implements CourseService {
                 })
                 .map(courseRepository::save);
             if (flag.get()) return ResponseEntity.ok().body(body); else {
-                return ResponseEntity.badRequest().body("Already enrolled");
+                System.out.println("Inside else part of enrolledCourses function");
+                HashMap<String,String> errorbody = new HashMap<>();
+                body.put("status","Already enrolled");
+                return ResponseEntity.badRequest().body(errorbody);
             }
         } catch (Exception e) {
+            System.out.println("Error in enrolledCourses is --> "+ e);
             return ResponseEntity.status(500).build();
         }
     }

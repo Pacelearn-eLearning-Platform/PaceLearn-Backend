@@ -237,10 +237,12 @@ public class CourseResource {
      */
 
     @GetMapping("courses/enrolled")
-    public ResponseEntity<List<CourseDTO>> enrolledCourses() throws Exception {
+    public ResponseEntity<HashMap<String,List<CourseDTO>>> enrolledCourses() throws Exception {
         log.debug("REST request to get a page of Courses");
         List<CourseDTO> list = courseService.getEnrolledCourses();
-        return ResponseEntity.ok().body(list);
+        HashMap<String,List<CourseDTO>> body = new HashMap<>();
+        body.put("enrolments",list);
+        return ResponseEntity.ok().body(body);
     }
 
     /**

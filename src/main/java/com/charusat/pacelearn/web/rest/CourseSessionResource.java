@@ -23,9 +23,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * REST controller for managing {@link com.charusat.pacelearn.domain.CourseSession}.
@@ -174,8 +172,12 @@ public class CourseSessionResource {
 
     // Getting session by section
     @GetMapping("/videoSessions/{id}")
-    public List getCourseSessionByID(@PathVariable Long id) {
-        return (List) courseSessionService.findCourseSessionsByCourseSectionIn(id);
+    public ResponseEntity<Map<String,List>> getCourseSessionByID(@PathVariable Long id) {
+        List sessionList =  (List) courseSessionService.findCourseSessionsByCourseSectionIn(id);
+        HashMap<String,List> body = new HashMap<>();
+        body.put("video",sessionList);
+        return ResponseEntity.ok().body(body);
+//        return (List) courseSessionService.findCourseSessionsByCourseSectionIn(id);
     }
 
     /**

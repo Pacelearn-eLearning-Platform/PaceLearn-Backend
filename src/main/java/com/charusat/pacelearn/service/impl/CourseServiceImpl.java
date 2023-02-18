@@ -206,7 +206,8 @@ public class CourseServiceImpl implements CourseService {
                     System.out.println("HAHAHAHAHAHAHA2  --> " + course.getEnrolledUsersLists());
                     courseDTO.setEnrolled(false);
                 }
-                courseDTO.setMinStudents(course.getMinStudents() + getStudentEnrolledCountByCourse(course.getId()).getBody());
+//                courseDTO.setMinStudents(course.getMinStudents() + getStudentEnrolledCountByCourse(course.getId()).getBody());
+                courseDTO.setMinStudents(course.getMinStudents() + course.getEnrolledUsersLists().size());
                 list.add(courseDTO);
             }
             return list;
@@ -216,11 +217,13 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ResponseEntity<Integer> getStudentEnrolledCountByCourse(Long courseId) {
+    public ResponseEntity<Map<String,Integer>> getStudentEnrolledCountByCourse(Long courseId) {
         Optional<Course> course = courseRepository.findById(courseId);
         if (course.isPresent()) {
             Integer count = course.get().getEnrolledUsersLists().size();
-            return ResponseEntity.ok(count);
+            HashMap<String,Integer> body = new HashMap<>();
+            body.put("studentCount",count);
+            return ResponseEntity.ok(body);
         } else {
             log.error("Course not found");
             return ResponseEntity.noContent().build();

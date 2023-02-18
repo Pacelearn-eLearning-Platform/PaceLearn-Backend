@@ -23,6 +23,7 @@ import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 import javax.net.ssl.SSLSession;
+import javax.swing.text.html.Option;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.net.URI;
@@ -223,10 +224,17 @@ public class CourseResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the courseDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/courses/{id}")
-    public ResponseEntity<CourseDTO> getCourse(@PathVariable Long id) {
+    public ResponseEntity<Map<String,Optional<CourseDTO>>> getCourse(@PathVariable Long id) {
         log.debug("REST request to get Course : {}", id);
         Optional<CourseDTO> courseDTO = courseService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(courseDTO);
+        HashMap<String, Optional<CourseDTO>> body = new HashMap<>();
+        body.put("course",courseDTO);
+        if (courseDTO.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }else{
+            return ResponseEntity.ok().body(body);
+        }
+//        return ResponseUtil.wrapOrNotFound(body);
     }
 
     /**
@@ -266,8 +274,9 @@ public class CourseResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)}.
      */
     @GetMapping("/courses/{courseId}/student-count")
-    public ResponseEntity<Integer> getStudentCountByCourse(@PathVariable Long courseId) {
+    public ResponseEntity<Map<String,Integer>> getStudentCountByCourse(@PathVariable Long courseId) {
         log.debug("REST request to get student enrolled count based on courseId : {}", courseId);
+//        Integer count = courseService.getStudentEnrolledCountByCourse(courseId);
         return courseService.getStudentEnrolledCountByCourse(courseId);
     }
 

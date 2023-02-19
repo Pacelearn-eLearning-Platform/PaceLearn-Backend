@@ -23,9 +23,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * REST controller for managing {@link com.charusat.pacelearn.domain.CourseLevel}.
@@ -155,14 +153,16 @@ public class CourseLevelResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of courseLevels in body.
      */
     @GetMapping("/course-levels")
-    public ResponseEntity<List<CourseLevelDTO>> getAllCourseLevels(
+    public ResponseEntity<Map<String,List<CourseLevelDTO>>> getAllCourseLevels(
         CourseLevelCriteria criteria,
         @org.springdoc.api.annotations.ParameterObject Pageable pageable
     ) {
         log.debug("REST request to get CourseLevels by criteria: {}", criteria);
         Page<CourseLevelDTO> page = courseLevelQueryService.findByCriteria(criteria, pageable);
+        HashMap<String,List<CourseLevelDTO>> body = new HashMap<>();
+        body.put("levels",page.getContent());
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        return ResponseEntity.ok().headers(headers).body(body);
     }
 
     /**

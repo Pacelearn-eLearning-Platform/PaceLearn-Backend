@@ -60,6 +60,7 @@ public class CourseServiceImpl implements CourseService {
         if (course.getCourseCreatedOn() == null) {
             course.setCourseCreatedOn(LocalDate.now());
         }
+        System.out.println("Insisde COurse creation implementation");
         course.setIsApproved(false);
         course.isPublished(false);
         course.setIsDraft(true);

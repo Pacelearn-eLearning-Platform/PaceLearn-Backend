@@ -230,18 +230,23 @@ public class CourseCategoryResource {
     // To Get Parent/Main Categories of courses
 
     @GetMapping("/course-category/parent-categories")
-    public ResponseEntity<List<CourseCategory>> getParentCourseCategories() {
+    public ResponseEntity<Map<String,List<CourseCategory>>> getParentCourseCategories() {
         log.debug("REST request to get course category by isParent");
         List<CourseCategory> list = courseCategoryService.listParentCategory();
-        return ResponseEntity.ok().body(list);
+        HashMap<String,List<CourseCategory>> body = new HashMap<>();
+        body.put("parentCategories",list);
+        return ResponseEntity.ok().body(body);
     }
 
     // To get Sub Categories by Parent Category
 
     @GetMapping("/course-category/sub-categories/{id}")
-    public ResponseEntity<List<CourseCategory>> getSubCourseCategories(@PathVariable Long id) {
+    public ResponseEntity<Map<String,List<CourseCategory>>> getSubCourseCategories(@PathVariable Long id) {
         log.debug("REST request to get course category by parentId");
-        return ResponseEntity.ok().body(courseCategoryService.listByParentId(id));
+//        return ResponseEntity.ok().body(courseCategoryService.listByParentId(id));
+        HashMap<String,List<CourseCategory>> body = new HashMap<>();
+        body.put("subcategory",courseCategoryService.listByParentId(id));
+        return ResponseEntity.ok().body(body);
     }
 
     // to get count of courses of parent category

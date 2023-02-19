@@ -44,10 +44,10 @@ public class CourseDTO implements Serializable {
     @Size(min = 10, max = 42)
     private String courseLogo;
 
-    @NotNull
+//    @NotNull
     private LocalDate courseCreatedOn;
 
-    @NotNull
+//    @NotNull
     private LocalDate courseUpdatedOn;
 
     @Size(min = 10, max = 42)
@@ -55,13 +55,13 @@ public class CourseDTO implements Serializable {
 
     private Double amount;
 
-    @NotNull
+//    @NotNull
     private Boolean isDraft;
 
-    @NotNull
+//    @NotNull
     private Boolean isApproved;
 
-    @NotNull
+//    @NotNull
     private Boolean isPublished;
 
     private LocalDate courseApprovalDate;

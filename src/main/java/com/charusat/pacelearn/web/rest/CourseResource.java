@@ -191,7 +191,7 @@ public class CourseResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of courses in body.
      */
     @GetMapping("/courses")
-    public ResponseEntity<List<Course>> getAllCourses(
+    public ResponseEntity<Map<String,List<Course>>> getAllCourses(
         //        CourseCriteria criteria
         //        @org.springdoc.api.annotations.ParameterObject Pageable pageable
     ) {
@@ -201,8 +201,10 @@ public class CourseResource {
         //        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         //        return ResponseEntity.ok().body(list);
         List<Course> list = courseService.findAll();
-        System.out.println("HAHAHAH--> " + list);
-        return ResponseEntity.ok().body(list);
+//        System.out.println("HAHAHAH--> " + list);
+        HashMap<String,List<Course>> body = new HashMap<>();
+        body.put("courses",list);
+        return ResponseEntity.ok().body(body);
     }
 
     /**

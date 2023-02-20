@@ -41,7 +41,7 @@ public class CourseDTO implements Serializable {
     private Integer courseLength;
 
     @NotNull
-    @Size(min = 10, max = 42)
+//    @Size(min = 10, max = 42)
     private String courseLogo;
 
 //    @NotNull

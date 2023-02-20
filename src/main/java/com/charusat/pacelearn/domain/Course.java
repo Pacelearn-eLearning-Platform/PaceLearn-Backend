@@ -51,8 +51,8 @@ public class Course implements Serializable {
     private Integer courseLength;
 
     @NotNull
-    @Size(min = 10, max = 42)
-    @Column(name = "course_logo", length = 42, nullable = false)
+//    @Size(min = 10, max = 42)
+    @Column(name = "course_logo", nullable = false)
     private String courseLogo;
 
     @NotNull

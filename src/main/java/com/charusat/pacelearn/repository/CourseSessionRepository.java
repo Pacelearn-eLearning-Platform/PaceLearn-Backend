@@ -2,6 +2,8 @@ package com.charusat.pacelearn.repository;
 
 import com.charusat.pacelearn.domain.CourseSection;
 import com.charusat.pacelearn.domain.CourseSession;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -16,7 +18,16 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 @Repository
 public interface CourseSessionRepository extends JpaRepository<CourseSession, Long>, JpaSpecificationExecutor<CourseSession> {
+
+    /**
+     * CUSTOM
+     * AUTHOR : KIRTAN SHAH
+     */
+    List<CourseSession> findAllByCourseSection_Id(Long courseSectionId);
+    
+    
     List<CourseSession> findCourseSessionsByCourseSection(Optional<CourseSection> courseSection);
 
     List<CourseSession> findCourseSessionsByCourseSectionIn(Collection<CourseSection> courseSection);
+
 }

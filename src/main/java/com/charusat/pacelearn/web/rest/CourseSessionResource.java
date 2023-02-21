@@ -1,10 +1,12 @@
 package com.charusat.pacelearn.web.rest;
 
+import com.charusat.pacelearn.domain.CourseSession;
 import com.charusat.pacelearn.repository.CourseSessionRepository;
 import com.charusat.pacelearn.service.CourseSessionQueryService;
 import com.charusat.pacelearn.service.CourseSessionService;
 import com.charusat.pacelearn.service.criteria.CourseSessionCriteria;
 import com.charusat.pacelearn.service.dto.CourseSessionDTO;
+import com.charusat.pacelearn.service.dto.CourseSessionDTOManual;
 import com.charusat.pacelearn.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +23,7 @@ import tech.jhipster.web.util.ResponseUtil;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
@@ -220,4 +223,26 @@ public class CourseSessionResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
     }
+
+    /**
+     *
+     * CUSTOM CODE
+     * AUTHOR : Kirtan Shah
+     *
+     */
+
+    @PostMapping("course/{courseId}/course-session")
+    public ResponseEntity<CourseSession> createCourseSession(
+            @RequestBody CourseSessionDTOManual courseSessionDTOManual,
+            @PathVariable Long courseId
+//            @PathVariable Long courseSectionId
+    ) throws URISyntaxException, IOException {
+        log.debug("REST request to save CourseSession : {}", courseSessionDTOManual);
+        CourseSession result = courseSessionService.save(courseId, courseSessionDTOManual);
+        return ResponseEntity.ok().body(result);
+//                .created(new URI("/api/course-sessions/" + result.getId()))
+//                .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+//                .body(result);
+    }
+
 }

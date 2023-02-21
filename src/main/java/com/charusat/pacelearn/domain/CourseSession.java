@@ -1,5 +1,7 @@
 package com.charusat.pacelearn.domain;
 
+import com.charusat.pacelearn.service.dto.CourseSessionDTO;
+import com.charusat.pacelearn.service.dto.CourseSessionDTOManual;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -16,23 +18,23 @@ public class CourseSession implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
+//    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @NotNull
-    @Size(min = 10, max = 42)
+//    @NotNull
+//    @Size(min = 10, max = 42)
     @Column(name = "session_title", length = 42, nullable = false)
     private String sessionTitle;
 
-    @Size(min = 10, max = 400)
+//    @Size(min = 10, max = 400)
     @Column(name = "session_description", length = 400)
     private String sessionDescription;
 
     @NotNull
-    @Size(min = 10, max = 42)
+//    @Size(min = 10, max = 42)
     @Column(name = "session_video", length = 42, nullable = false)
     private String sessionVideo;
 
@@ -44,7 +46,7 @@ public class CourseSession implements Serializable {
     @Column(name = "session_order", nullable = false)
     private Integer sessionOrder;
 
-    @Size(min = 10, max = 42)
+//    @Size(min = 10, max = 42)
     @Column(name = "session_resource", length = 42)
     private String sessionResource;
 
@@ -52,7 +54,7 @@ public class CourseSession implements Serializable {
     @Column(name = "is_preview", nullable = false)
     private Boolean isPreview;
 
-    @NotNull
+//    @NotNull
     @Column(name = "is_draft", nullable = false)
     private Boolean isDraft;
 
@@ -64,17 +66,25 @@ public class CourseSession implements Serializable {
     @Column(name = "is_published", nullable = false)
     private Boolean isPublished;
 
-    @Size(min = 10, max = 42)
+//    @Size(min = 10, max = 42)
     @Column(name = "session_location", length = 42)
     private String sessionLocation;
 
-    @Size(min = 10, max = 42)
+//    @Size(min = 10, max = 42)
     @Column(name = "quiz_link", length = 42)
     private String quizLink;
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "course" }, allowSetters = true)
     private CourseSection courseSection;
+
+    public CourseSession(CourseSessionDTOManual courseSessionDTOManual) {
+
+    }
+
+    public CourseSession() {
+
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 

@@ -112,6 +112,28 @@ public class AccountResource {
     }
 
     /**
+     *  CUSTOM
+     *  AUTHOR : KIRTAN SHAH
+     */
+    /**
+     * {@code GET  /account} : get the current user.
+     *
+     * @return the current user.
+     * @throws RuntimeException {@code 500 (Internal Server Error)} if the user couldn't be returned.
+     */
+    @GetMapping("/getCurrentAccount")
+    public Map<String,AdminUserDTO> getCurrentAccount() {
+        HashMap map = new HashMap();
+        AdminUserDTO body = userService
+                .getUserWithAuthorities()
+                .map(AdminUserDTO::new)
+                .orElseThrow(() -> new AccountResourceException("User could not be found"));
+        map.put("user",body);
+        return map;
+    }
+
+
+    /**
      * {@code POST  /account} : update the current user information.
      *
      * @param userDTO the current user information.

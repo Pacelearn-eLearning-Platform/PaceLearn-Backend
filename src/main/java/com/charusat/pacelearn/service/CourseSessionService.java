@@ -2,9 +2,11 @@ package com.charusat.pacelearn.service;
 
 import com.charusat.pacelearn.domain.CourseSession;
 import com.charusat.pacelearn.service.dto.CourseSessionDTO;
+import com.charusat.pacelearn.service.dto.CourseSessionDTOManual;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,4 +56,6 @@ public interface CourseSessionService {
     List<CourseSession> findSessionByCourseSection(Long id);
 
     List<CourseSession> findCourseSessionsByCourseSectionIn(Long id);
+
+    CourseSession save(Long courseId, CourseSessionDTOManual courseSessionDTOManual) throws IOException;
 }

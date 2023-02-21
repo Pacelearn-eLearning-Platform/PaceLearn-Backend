@@ -48,6 +48,8 @@ public interface CourseSectionService {
 
     List<CourseSection> findCourseSectionsByCourse(Long id);
 
+    CourseSection save(Long courseId, CourseSectionDTO courseSectionDTO);
+
     /**
      * Delete the "id" courseSection.
      *

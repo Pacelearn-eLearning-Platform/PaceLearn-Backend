@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 public class CourseSectionDTO implements Serializable {
 
-    @NotNull
+//    @NotNull
     private Long id;
 
     @NotNull
@@ -20,13 +20,13 @@ public class CourseSectionDTO implements Serializable {
     @Size(min = 10, max = 400)
     private String sectionDescription;
 
-    @NotNull
+//    @NotNull
     private Integer sectionOrder;
 
-    @NotNull
+//    @NotNull
     private Boolean isDraft;
 
-    @NotNull
+//    @NotNull
     private Boolean isApproved;
 
     private com.charusat.pacelearn.service.dto.CourseDTO course;

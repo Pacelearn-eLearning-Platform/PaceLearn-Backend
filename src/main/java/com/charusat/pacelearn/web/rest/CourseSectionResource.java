@@ -212,4 +212,17 @@ public class CourseSectionResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
     }
+
+    @PostMapping("/course/{courseId}/course-sections")
+    public ResponseEntity<CourseSection> createCourseSection(@PathVariable Long courseId, @RequestBody CourseSectionDTO courseSectionDTO)
+            throws URISyntaxException {
+        log.debug("REST request to save CourseSection : {}", courseSectionDTO);
+        CourseSection result = courseSectionService.save(courseId, courseSectionDTO);
+        return ResponseEntity
+                .created(new URI("/api/course-sections/" + result.getId()))
+                .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+                .body(result);
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package com.charusat.pacelearn.domain;
 
+import com.charusat.pacelearn.service.dto.CourseSectionDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -16,18 +17,18 @@ public class CourseSection implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
+//    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
     @NotNull
-    @Size(min = 10, max = 42)
+//    @Size(min = 10, max = 42)
     @Column(name = "section_title", length = 42, nullable = false)
     private String sectionTitle;
 
-    @Size(min = 10, max = 400)
+//    @Size(min = 10, max = 400)
     @Column(name = "section_description", length = 400)
     private String sectionDescription;
 
@@ -47,6 +48,10 @@ public class CourseSection implements Serializable {
     @JsonIgnoreProperties(value = { "courseLevel", "courseCategory", "courseType", "user" }, allowSetters = true)
     private Course course;
 
+    public CourseSection() {
+
+    }
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -56,6 +61,11 @@ public class CourseSection implements Serializable {
     public CourseSection id(Long id) {
         this.setId(id);
         return this;
+    }
+
+    public CourseSection(CourseSectionDTO courseSectionDTO) {
+        this.sectionTitle = courseSectionDTO.getSectionTitle();
+        this.sectionDescription = courseSectionDTO.getSectionDescription();
     }
 
     public void setId(Long id) {

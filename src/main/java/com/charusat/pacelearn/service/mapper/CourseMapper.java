@@ -7,6 +7,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
+import java.util.Optional;
+
 /**
  * Mapper for the entity {@link Course} and its DTO {@link CourseDTO}.
  */
@@ -28,4 +30,6 @@ public interface CourseMapper extends EntityMapper<CourseDTO, Course> {
     @Mapping(target = "id", source = "id")
     @Mapping(target = "courseTitle", source = "courseTitle")
     CourseDTO toDtoCourseTitle(Course course);
+
+    Course toEntity(Optional<CourseDTO> course);
 }

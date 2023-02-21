@@ -1,9 +1,13 @@
 package com.charusat.pacelearn.service.impl;
 
+import com.charusat.pacelearn.domain.Course;
 import com.charusat.pacelearn.domain.CourseSection;
+import com.charusat.pacelearn.domain.User;
 import com.charusat.pacelearn.repository.CourseRepository;
 import com.charusat.pacelearn.repository.CourseSectionRepository;
 import com.charusat.pacelearn.service.CourseSectionService;
+import com.charusat.pacelearn.service.UserService;
+import com.charusat.pacelearn.service.dto.CourseDTO;
 import com.charusat.pacelearn.service.dto.CourseSectionDTO;
 import com.charusat.pacelearn.service.mapper.CourseMapper;
 import com.charusat.pacelearn.service.mapper.CourseSectionMapper;
@@ -28,6 +32,10 @@ public class CourseSectionServiceImpl implements CourseSectionService {
 
     private final CourseSectionRepository courseSectionRepository;
 
+    private final CourseServiceImpl courseService;
+
+    private final UserService userService;
+
     private final CourseSectionMapper courseSectionMapper;
 
     private final CourseMapper courseMapper;
@@ -35,12 +43,14 @@ public class CourseSectionServiceImpl implements CourseSectionService {
     private final CourseRepository courseRepository;
 
     public CourseSectionServiceImpl(
-        CourseSectionRepository courseSectionRepository,
-        CourseSectionMapper courseSectionMapper,
-        CourseMapper courseMapper,
-        CourseRepository courseRepository
+            CourseSectionRepository courseSectionRepository,
+            CourseServiceImpl courseService, UserService userService, CourseSectionMapper courseSectionMapper,
+            CourseMapper courseMapper,
+            CourseRepository courseRepository
     ) {
         this.courseSectionRepository = courseSectionRepository;
+        this.courseService = courseService;
+        this.userService = userService;
         this.courseSectionMapper = courseSectionMapper;
         this.courseMapper = courseMapper;
         this.courseRepository = courseRepository;
@@ -97,5 +107,26 @@ public class CourseSectionServiceImpl implements CourseSectionService {
     public void delete(Long id) {
         log.debug("Request to delete CourseSection : {}", id);
         courseSectionRepository.deleteById(id);
+    }
+
+    public CourseSection save(Long courseId, CourseSectionDTO courseSectionDTO) {
+        Optional<CourseDTO> course = courseService.findOne(courseId);
+        Course course1 = courseMapper.toEntity(course);
+//        System.out.println("Course is --> "+courseMapper.toEntity(course.get()));
+        Optional<User> user = userService.getUserWithAuthorities();
+//        System.out.println("Logged in user is --> "+user.get().getId());
+//        System.out.println("Expected user in user is --> "+course.get().getUser().getId());
+        if (course.isPresent() && course.get().getUser().getId().equals(user.get().getId())) {
+            CourseSection courseSection = new CourseSection(courseSectionDTO);
+//            courseSection.course(course.get());
+            System.out.println("Inside if part of save method");
+            courseSection.course(courseMapper.toEntity(course.get()));
+            courseSection.isDraft(false);
+            courseSection.sectionOrder(courseSectionRepository.findCourseSectionByCourse_Id(courseId).size() + 1);
+            courseSection.isApproved(false);
+            return courseSectionRepository.save(courseSection);
+        } else {
+            return null;
+        }
     }
 }

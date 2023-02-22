@@ -64,7 +64,7 @@ public class AccountResource {
             throw new InvalidPasswordException();
         }
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
-//        mailService.sendActivationEmail(user);
+        mailService.sendActivationEmail(user);
 
         HashMap<String,String> responseBody = new HashMap<>();
         responseBody.put("message","Registered Successfully, please check your email and verify your account before login");

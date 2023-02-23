@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -35,4 +36,14 @@ public interface CourseRepository extends JpaRepository<Course, Long>, JpaSpecif
     List<Course> findAllByIsApproved(Boolean value);
 
     List<Course> findCourseByUserEquals(User author);
+
+    /**
+     *  CUSTOM
+     *  AUTHOR : KIRTAN SHAH
+     */
+
+    Integer countCoursesByIsApproved(@NotNull Boolean isApproved);
+
+    @Query(value = "select count(distinct course_id) from rel_course__enrolled_users_list", nativeQuery = true)
+    Integer findEnrolledCourses();
 }

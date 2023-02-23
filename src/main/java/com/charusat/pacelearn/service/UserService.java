@@ -13,6 +13,8 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import com.charusat.pacelearn.web.rest.errors.InvalidEmailException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -116,13 +118,21 @@ public class UserService {
         newUser.setActivationKey(RandomUtil.generateActivationKey());
         newUser.setCreatedBy(userDTO.getLogin());
         Set<Authority> authorities = new HashSet<>();
-        if (userDTO.getAuthorities().contains("ROLE_STUDENT")) {
+        if (userDTO.getEmail().contains("charusat.edu.in")) {
             authorityRepository.findById(AuthoritiesConstants.STUDENT).ifPresent(authorities::add);
-        } else if (userDTO.getAuthorities().contains("ROLE_FACULTY")) {
+        } else if (userDTO.getEmail().contains("charusat.ac.in")) {
             authorityRepository.findById(AuthoritiesConstants.FACULTY).ifPresent(authorities::add);
         } else {
-            authorityRepository.findById(AuthoritiesConstants.STUDENT).ifPresent(authorities::add);
+            throw new InvalidEmailException();
+//            authorityRepository.findById(AuthoritiesConstants.STUDENT).ifPresent(authorities::add);
         }
+//        if (userDTO.getAuthorities().contains("ROLE_STUDENT")) {
+//            authorityRepository.findById(AuthoritiesConstants.STUDENT).ifPresent(authorities::add);
+//        } else if (userDTO.getAuthorities().contains("ROLE_FACULTY")) {
+//            authorityRepository.findById(AuthoritiesConstants.FACULTY).ifPresent(authorities::add);
+//        } else {
+//            authorityRepository.findById(AuthoritiesConstants.STUDENT).ifPresent(authorities::add);
+//        }
         //        authorityRepository.findById(AuthoritiesConstants.STUDENT).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);

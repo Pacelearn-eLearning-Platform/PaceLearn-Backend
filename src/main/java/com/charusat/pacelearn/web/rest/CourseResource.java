@@ -322,4 +322,36 @@ public class CourseResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
     }
+
+
+    /**
+     * CUSTOM
+     * AUTHOR : Kirtan Shah
+     */
+
+    @PutMapping("/course/{courseId}/approve")
+    public ResponseEntity<Map<String,String>> approveCourse(@PathVariable Long courseId) throws URISyntaxException {
+        log.debug("REST request to approve CourseId : {}", courseId);
+        Course result = courseService.approveCourse(courseId);
+        HashMap<String,String> body = new HashMap<>();
+        body.put("message","Course approved successfully");
+        return ResponseEntity.ok().body(body);
+//                .created(new URI("/api/courses/" + result.getId()))
+//                .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+//                .body(result);
+    }
+
+    @GetMapping("/admin/courses/forApproval")
+    public ResponseEntity<Map<String,List<Course>>> approvalPendingCourses(){
+        log.debug("REST request to get pending approval courses : {}");
+        List<Course> result = courseRepository.findAllByIsApproved(false);
+        HashMap<String,List<Course>> body = new HashMap();
+        body.put("pendingApprovalCourses",result);
+
+        return ResponseEntity.ok().body(body);
+    }
+
+
+
+
 }

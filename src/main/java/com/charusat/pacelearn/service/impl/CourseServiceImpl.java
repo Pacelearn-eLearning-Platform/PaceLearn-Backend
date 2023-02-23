@@ -3,16 +3,16 @@ package com.charusat.pacelearn.service.impl;
 import com.charusat.pacelearn.domain.Course;
 import com.charusat.pacelearn.domain.User;
 import com.charusat.pacelearn.repository.CourseRepository;
+import com.charusat.pacelearn.repository.CourseReviewStatusRepository;
 import com.charusat.pacelearn.repository.UserRepository;
 import com.charusat.pacelearn.security.AuthoritiesConstants;
 import com.charusat.pacelearn.service.CourseService;
+import com.charusat.pacelearn.service.MailService;
 import com.charusat.pacelearn.service.UserService;
 import com.charusat.pacelearn.service.dto.CourseDTO;
 import com.charusat.pacelearn.service.mapper.CourseMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,19 +33,24 @@ public class CourseServiceImpl implements CourseService {
     private final CourseRepository courseRepository;
 
     private final UserRepository userRepository;
+    private final CourseReviewStatusRepository courseReviewStatusRepository;
+
+    private final MailService mailService;
 
     private final CourseMapper courseMapper;
 
     private final UserService userService;
 
     public CourseServiceImpl(
-        CourseRepository courseRepository,
-        UserRepository userRepository,
-        CourseMapper courseMapper,
-        UserService userService
+            CourseRepository courseRepository,
+            UserRepository userRepository,
+            CourseReviewStatusRepository courseReviewStatusRepository, MailService mailService, CourseMapper courseMapper,
+            UserService userService
     ) {
         this.courseRepository = courseRepository;
         this.userRepository = userRepository;
+        this.courseReviewStatusRepository = courseReviewStatusRepository;
+        this.mailService = mailService;
         this.userService = userService;
         this.courseMapper = courseMapper;
     }
@@ -370,4 +375,40 @@ public class CourseServiceImpl implements CourseService {
             return null;
         }
     }
+
+
+    @Override
+    public Course approveCourse(Long courseId) {
+        log.debug("Request to approve CourseId : {}", courseId);
+
+        Optional<User> user = userService.getUserWithAuthorities();
+        if (user.isPresent()) {
+            String authority = user.get().getAuthorities().toString();
+            if (authority.contains("ROLE_ADMIN") || authority.contains("ROLE_REVIEWER")) {
+                Optional<Course> course = courseRepository.findById(courseId);
+                if (course.isPresent()) {
+                    course.get().setIsApproved(true);
+//                    CourseReviewStatus crs = course.get().getCourseReviewStatus();
+//                    crs.setStatus(true);
+//                    crs.setStatusUpdatedOn(LocalDate.now());
+//                    courseReviewStatusRepository.save(crs);
+//                    course.get().setCourseReviewStatus(crs);
+                    course.get().setCourseApprovalDate(LocalDate.now());
+                    System.out.println("Course Object is ---> "+course.get());
+                    mailService.sendCourseApprovalMail(course.get());
+                    return courseRepository.save(course.get());
+                } else {
+                    log.warn("Course not present");
+                    return null;
+                }
+            } else {
+                log.warn("You are not authorized");
+                return null;
+            }
+        } else {
+            log.warn("User not present");
+            return null;
+        }
+    }
+
 }

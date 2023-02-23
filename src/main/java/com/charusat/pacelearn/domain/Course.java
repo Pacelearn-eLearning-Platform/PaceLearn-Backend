@@ -78,7 +78,7 @@ public class Course implements Serializable {
     @Column(name = "is_approved", nullable = false)
     private Boolean isApproved;
 
-    @NotNull
+//    @NotNull
     @Column(name = "is_published", nullable = false)
     private Boolean isPublished;
 

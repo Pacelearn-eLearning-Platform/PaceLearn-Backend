@@ -6,6 +6,7 @@ import com.charusat.pacelearn.service.dto.CourseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import java.util.Set;
 /**
  * Service Interface for managing {@link com.charusat.pacelearn.domain.Course}.
  */
+@Transactional(readOnly = true)
 public interface CourseService {
     /**
      * Save a course.
@@ -78,4 +80,6 @@ public interface CourseService {
     ResponseEntity<Set<User>> getEnrolledUsersByCourseId(Long courseId);
 
     List<Course> findAll();
+
+    Course approveCourse(Long courseId);
 }

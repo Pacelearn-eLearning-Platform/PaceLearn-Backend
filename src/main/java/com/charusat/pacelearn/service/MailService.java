@@ -150,4 +150,38 @@ public class MailService {
         }
     }
 
+
+    public void sendCourseDisApprovalMail(Course course) {
+        User author = course.getUser();
+        log.debug("Sending course disapproval email to '{}'", author.getEmail());
+
+        if (author.getEmail() == null) {
+            log.debug("Email doesn't exist for user '{}'", author.getLogin());
+            return;
+        }
+        String email = author.getEmail();
+        String subject = "RE: Revoking Course approval";
+        String content =
+                "Dear " +
+                        author.getFirstName() +
+                        ",<br>" +
+                        "Your course : " +
+                        course.getCourseTitle() +
+                        ", has been disapproved.<br>"+"Please contact our admin for more information <br><br>" +
+                        "Regards\nTeam CharuVidya";
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, false, StandardCharsets.UTF_8.name());
+            message.setTo(email);
+            message.setFrom(jHipsterProperties.getMail().getFrom());
+            message.setSubject(subject);
+            message.setText(content, true);
+            javaMailSender.send(mimeMessage);
+            log.debug("Sent email to User '{}'", email);
+        } catch (MailException | MessagingException e) {
+            log.warn("Email could not be sent to user '{}'", email, e);
+        }
+    }
+
+
 }

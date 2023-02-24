@@ -411,4 +411,41 @@ public class CourseServiceImpl implements CourseService {
         }
     }
 
+
+    @Override
+    public Course disApproveCourse(Long courseId) {
+        log.debug("Request to revoke-approval CourseId : {}", courseId);
+
+        Optional<User> user = userService.getUserWithAuthorities();
+        if (user.isPresent()) {
+            String authority = user.get().getAuthorities().toString();
+            if (authority.contains("ROLE_ADMIN") || authority.contains("ROLE_REVIEWER")) {
+                Optional<Course> course = courseRepository.findById(courseId);
+                if (course.isPresent()) {
+                    course.get().setIsApproved(false);
+//                    CourseReviewStatus crs = course.get().getCourseReviewStatus();
+//                    crs.setStatus(true);
+//                    crs.setStatusUpdatedOn(LocalDate.now());
+//                    courseReviewStatusRepository.save(crs);
+//                    course.get().setCourseReviewStatus(crs);
+//                    course.get().setCourseApprovalDate(LocalDate.now());
+                    course.get().setCourseUpdatedOn(LocalDate.now());
+                    System.out.println("Course Object is ---> "+course.get());
+                    mailService.sendCourseDisApprovalMail(course.get());
+                    return courseRepository.save(course.get());
+                } else {
+                    log.warn("Course not present");
+                    return null;
+                }
+            } else {
+                log.warn("You are not authorized");
+                return null;
+            }
+        } else {
+            log.warn("User not present");
+            return null;
+        }
+    }
+
+
 }

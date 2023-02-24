@@ -82,4 +82,5 @@ public interface CourseService {
     List<Course> findAll();
 
     Course approveCourse(Long courseId);
+    Course disApproveCourse(Long courseId);
 }

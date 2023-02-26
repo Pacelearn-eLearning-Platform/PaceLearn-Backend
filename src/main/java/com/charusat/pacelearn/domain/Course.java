@@ -107,6 +107,9 @@ public class Course implements Serializable {
     @ManyToOne
     private User user;
 
+    @ManyToOne
+    private User reviewer;
+
     @ManyToMany
     @JoinTable(
         name = "rel_course__enrolled_users_list",
@@ -114,6 +117,19 @@ public class Course implements Serializable {
         inverseJoinColumns = @JoinColumn(name = "enrolled_users_list_id")
     )
     private Set<User> enrolledUsersLists = new HashSet<>();
+
+    public User getReviewer() {
+        return reviewer;
+    }
+
+    public void setReviewer(User reviewer) {
+        this.reviewer = reviewer;
+    }
+
+    public Course reviewer(User user) {
+        this.setReviewer(user);
+        return this;
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 

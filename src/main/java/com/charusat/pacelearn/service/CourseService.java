@@ -83,4 +83,7 @@ public interface CourseService {
 
     Course approveCourse(Long courseId);
     Course disApproveCourse(Long courseId);
+
+    User assignReviewer(Long userId);
+    User removeReviewer(Long userId);
 }

@@ -20,22 +20,22 @@ public class CourseDTO implements Serializable {
     private Long id;
 
     @NotNull
-    @Size(min = 10, max = 42)
+//    @Size(min = 10, max = 42)
     private String courseTitle;
 
     @NotNull
-    @Size(min = 10, max = 400)
+//    @Size(min = 10, max = 400)
     private String courseDescription;
 
     @NotNull
-    @Size(min = 10, max = 400)
+//    @Size(min = 10, max = 400)
     private String courseObjectives;
 
     @NotNull
-    @Size(min = 10, max = 42)
+//    @Size(min = 10, max = 42)
     private String courseSubTitle;
 
-    @Size(min = 10, max = 42)
+//    @Size(min = 10, max = 42)
     private String coursePreviewURL;
 
     private Integer courseLength;
@@ -50,7 +50,7 @@ public class CourseDTO implements Serializable {
 //    @NotNull
     private LocalDate courseUpdatedOn;
 
-    @Size(min = 10, max = 42)
+//    @Size(min = 10, max = 42)
     private String courseRootDir;
 
     private Double amount;

@@ -24,26 +24,26 @@ public class Course implements Serializable {
     private Long id;
 
     @NotNull
-    @Size(min = 10, max = 42)
+   //  @Size(min = 10, max = 42)
     @Column(name = "course_title", length = 42, nullable = false)
     private String courseTitle;
 
     @NotNull
-    @Size(min = 10, max = 400)
+   //  @Size(min = 10, max = 400)
     @Column(name = "course_description", length = 400, nullable = false)
     private String courseDescription;
 
     @NotNull
-    @Size(min = 10, max = 400)
+   //  @Size(min = 10, max = 400)
     @Column(name = "course_objectives", length = 400, nullable = false)
     private String courseObjectives;
 
     @NotNull
-    @Size(min = 10, max = 42)
+   //  @Size(min = 10, max = 42)
     @Column(name = "course_sub_title", length = 42, nullable = false)
     private String courseSubTitle;
 
-    @Size(min = 10, max = 42)
+   //  @Size(min = 10, max = 42)
     @Column(name = "course_preview_url", length = 42)
     private String coursePreviewURL;
 
@@ -51,7 +51,7 @@ public class Course implements Serializable {
     private Integer courseLength;
 
     @NotNull
-//    @Size(min = 10, max = 42)
+//   //  @Size(min = 10, max = 42)
     @Column(name = "course_logo", nullable = false)
     private String courseLogo;
 
@@ -63,7 +63,7 @@ public class Course implements Serializable {
     @Column(name = "course_updated_on", nullable = false)
     private LocalDate courseUpdatedOn;
 
-    @Size(min = 10, max = 42)
+   //  @Size(min = 10, max = 42)
     @Column(name = "course_root_dir", length = 42)
     private String courseRootDir;
 
@@ -107,6 +107,9 @@ public class Course implements Serializable {
     @ManyToOne
     private User user;
 
+    @ManyToOne
+    private User reviewer;
+
     @ManyToMany
     @JoinTable(
         name = "rel_course__enrolled_users_list",
@@ -114,6 +117,19 @@ public class Course implements Serializable {
         inverseJoinColumns = @JoinColumn(name = "enrolled_users_list_id")
     )
     private Set<User> enrolledUsersLists = new HashSet<>();
+
+    public User getReviewer() {
+        return reviewer;
+    }
+
+    public void setReviewer(User reviewer) {
+        this.reviewer = reviewer;
+    }
+
+    public Course reviewer(User user) {
+        this.setReviewer(user);
+        return this;
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 

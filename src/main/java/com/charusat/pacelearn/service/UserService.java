@@ -40,6 +40,7 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
+
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;

@@ -1,11 +1,13 @@
 package com.charusat.pacelearn.web.rest;
 
 import com.charusat.pacelearn.domain.Course;
+import com.charusat.pacelearn.domain.User;
 import com.charusat.pacelearn.repository.CourseRepository;
 import com.charusat.pacelearn.repository.CourseSessionRepository;
 import com.charusat.pacelearn.repository.UserRepository;
 import com.charusat.pacelearn.security.AuthoritiesConstants;
 import com.charusat.pacelearn.service.CourseService;
+import com.charusat.pacelearn.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -29,12 +29,14 @@ public class AdminResourseCustom {
     private final CourseRepository courseRepository;
     private final CourseSessionRepository courseSessionRepository;
     private final CourseService courseService;
+    private final UserService userService;
 
-    public AdminResourseCustom(UserRepository userRepository, CourseRepository courseRepository, CourseSessionRepository courseSessionRepository, CourseService courseService) {
+    public AdminResourseCustom(UserRepository userRepository, CourseRepository courseRepository, CourseSessionRepository courseSessionRepository, CourseService courseService, UserService userService) {
         this.userRepository = userRepository;
         this.courseRepository = courseRepository;
         this.courseSessionRepository = courseSessionRepository;
         this.courseService = courseService;
+        this.userService = userService;
     }
 
 
@@ -122,6 +124,58 @@ public class AdminResourseCustom {
         body.put("approvedCourses",result);
 
         return ResponseEntity.ok().body(body);
+    }
+
+    @GetMapping("/instructor")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    public ResponseEntity<Map<String,List<User>>> getInstructors(){
+        log.debug("REST request to get pending approval courses : {}");
+//        List<Course> result = courseRepository.findAllByIsApproved(true);
+        List<User> result = userRepository.findAllByAuthorities("ROLE_FACULTY","ROLE_REVIEWER");
+        HashMap<String,List<User>> body = new HashMap();
+        body.put("instructors",result);
+
+        return ResponseEntity.ok().body(body);
+    }
+
+    @GetMapping("/reviewer")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    public ResponseEntity<Map<String,List<User>>> getReviewer(){
+        log.debug("REST request to get pending approval courses : {}");
+//        List<Course> result = courseRepository.findAllByIsApproved(true);
+        List<User> result = userRepository.findAllByAuthoritiesReviewer("ROLE_REVIEWER");
+        HashMap<String,List<User>> body = new HashMap();
+        body.put("reviewer",result);
+
+        return ResponseEntity.ok().body(body);
+    }
+
+    @PutMapping("/instructor/{instructorId}/make-reviewer")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    public ResponseEntity<Map<String,String>> assignReviewer(@PathVariable Long instructorId) throws URISyntaxException {
+        log.debug("REST request to assign a reviewer userId : {}", instructorId);
+//        Course result = courseService.approveCourse(courseId);
+        User result = courseService.assignReviewer(instructorId);
+        HashMap<String,String> body = new HashMap<>();
+        body.put("message","Updated Reviewer successfully");
+        return ResponseEntity.ok().body(body);
+//                .created(new URI("/api/courses/" + result.getId()))
+//                .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+//                .body(result);
+    }
+
+    @PutMapping("/instructor/{instructorId}/remove-reviewer")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    public ResponseEntity<Map<String,String>> removeReviewer(@PathVariable Long instructorId) throws URISyntaxException {
+        log.debug("REST request to assign a reviewer userId : {}", instructorId);
+//        Course result = courseService.approveCourse(courseId);
+        User result = courseService.removeReviewer(instructorId);
+        HashMap<String,String> body = new HashMap<>();
+        body.put("message","Updated Reviewer successfully");
+        return ResponseEntity.ok().body(body);
+//                .created(new URI("/api/courses/" + result.getId()))
+//                .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+//                .body(result);
     }
 
 }

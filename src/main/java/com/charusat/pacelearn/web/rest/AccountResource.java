@@ -1,5 +1,6 @@
 package com.charusat.pacelearn.web.rest;
 
+import com.charusat.pacelearn.PacelearnApplication;
 import com.charusat.pacelearn.domain.User;
 import com.charusat.pacelearn.repository.UserRepository;
 import com.charusat.pacelearn.security.SecurityUtils;
@@ -34,7 +35,7 @@ public class AccountResource {
         }
     }
 
-    private final Logger log = LoggerFactory.getLogger(AccountResource.class);
+    private final Logger log = LoggerFactory.getLogger(PacelearnApplication.class);
 
     private final UserRepository userRepository;
 
@@ -106,6 +107,7 @@ public class AccountResource {
      */
     @GetMapping("/account")
     public AdminUserDTO getAccount() {
+        log.debug("/GET Request for fetching account details");
         return userService
             .getUserWithAuthorities()
             .map(AdminUserDTO::new)

@@ -267,8 +267,10 @@ public class CourseCategoryResource {
     }
 
     @GetMapping("/course-category/parent-categories/sub-categories")
-    public ResponseEntity<Map<String, List<CourseCategory>>> getCourseSubCategoriesByParentCategories() {
-        log.debug("REST request to get map of course parent categories and course sub categories");
-        return ResponseEntity.ok().body(courseCategoryService.getCourseSubCategoriesByParentCategories());
+    public ResponseEntity<Map<String,Map<String, List<CourseCategory>>>> getCourseSubCategoriesByParentCategories() {
+        log.info("GET request to get map of course parent categories and course sub categories");
+        HashMap<String,Map<String, List<CourseCategory>>> body = new HashMap<>();
+        body.put("categories",courseCategoryService.getCourseSubCategoriesByParentCategories());
+        return ResponseEntity.ok().body(body);
     }
 }

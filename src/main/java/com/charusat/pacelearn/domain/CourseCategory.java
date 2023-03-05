@@ -118,8 +118,21 @@ public class CourseCategory implements Serializable {
         return this;
     }
 
+    public CourseCategory(Long id, String courseCategoryTitle, String logo, Boolean isParent, Integer parentId, String description) {
+        this.id = id;
+        this.courseCategoryTitle = courseCategoryTitle;
+        this.logo = logo;
+        this.isParent = isParent;
+        this.parentId = parentId;
+        this.description = description;
+    }
+
     public void setDescription(String description) {
         this.description = description;
+    }
+
+
+    public CourseCategory() {
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

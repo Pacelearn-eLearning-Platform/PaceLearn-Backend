@@ -1,5 +1,6 @@
 package com.charusat.pacelearn.web.rest;
 
+import com.charusat.pacelearn.domain.AllCategories;
 import com.charusat.pacelearn.domain.Course;
 import com.charusat.pacelearn.domain.CourseCategory;
 import com.charusat.pacelearn.repository.CourseCategoryRepository;
@@ -267,10 +268,10 @@ public class CourseCategoryResource {
     }
 
     @GetMapping("/course-category/parent-categories/sub-categories")
-    public ResponseEntity<Map<String,Map<String, List<CourseCategory>>>> getCourseSubCategoriesByParentCategories() {
+    public ResponseEntity<Map<String,ArrayList<AllCategories>>> getCourseSubCategoriesByParentCategories() {
         log.info("GET request to get map of course parent categories and course sub categories");
-        HashMap<String,Map<String, List<CourseCategory>>> body = new HashMap<>();
-        body.put("categories",courseCategoryService.getCourseSubCategoriesByParentCategories());
+        Map<String,ArrayList<AllCategories>> body = new HashMap<>();
+        body.put("categories",courseCategoryService.getCategoriesWithItsSubcategories());
         return ResponseEntity.ok().body(body);
     }
 }

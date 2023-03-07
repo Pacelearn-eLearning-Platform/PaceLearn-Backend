@@ -101,7 +101,7 @@ public class CourseServiceImpl implements CourseService {
     public List<Course> findAllOpen() {
         log.debug("Request to get all Courses");
 //        return courseRepository.findAll().map(courseMapper::toDto);
-        return courseRepository.findAll();
+        return courseRepository.findAllByIsApproved(true);
     }
 
     @Override

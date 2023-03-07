@@ -1,7 +1,9 @@
 package com.charusat.pacelearn.service.impl;
 
+import com.charusat.pacelearn.domain.Authority;
 import com.charusat.pacelearn.domain.Course;
 import com.charusat.pacelearn.domain.User;
+import com.charusat.pacelearn.repository.AuthorityRepository;
 import com.charusat.pacelearn.repository.CourseRepository;
 import com.charusat.pacelearn.repository.CourseReviewStatusRepository;
 import com.charusat.pacelearn.repository.UserRepository;
@@ -40,19 +42,20 @@ public class CourseServiceImpl implements CourseService {
     private final CourseMapper courseMapper;
 
     private final UserService userService;
+    private final AuthorityRepository authorityRepository;
 
     public CourseServiceImpl(
             CourseRepository courseRepository,
             UserRepository userRepository,
             CourseReviewStatusRepository courseReviewStatusRepository, MailService mailService, CourseMapper courseMapper,
-            UserService userService
-    ) {
+            UserService userService, AuthorityRepository authorityRepository) {
         this.courseRepository = courseRepository;
         this.userRepository = userRepository;
         this.courseReviewStatusRepository = courseReviewStatusRepository;
         this.mailService = mailService;
         this.userService = userService;
         this.courseMapper = courseMapper;
+        this.authorityRepository = authorityRepository;
     }
 
     @Override
@@ -98,7 +101,7 @@ public class CourseServiceImpl implements CourseService {
     public List<Course> findAllOpen() {
         log.debug("Request to get all Courses");
 //        return courseRepository.findAll().map(courseMapper::toDto);
-        return courseRepository.findAll();
+        return courseRepository.findAllByIsApproved(true);
     }
 
     @Override
@@ -371,8 +374,7 @@ public class CourseServiceImpl implements CourseService {
                 return null;
             }
         } else {
-            System.out.println("Inside ELse part");
-            return null;
+            return courseRepository.findAllByIsApproved(true);
         }
     }
 
@@ -447,5 +449,82 @@ public class CourseServiceImpl implements CourseService {
         }
     }
 
+    @Override
+    public User assignReviewer(Long userId) {
+        log.debug("Request to assign reviewer  : {}", userId);
+
+        Optional<User> user = userService.getUserWithAuthorities();
+        if (user.isPresent()) {
+            String authority = user.get().getAuthorities().toString();
+            if (authority.contains("ROLE_ADMIN") || authority.contains("ROLE_REVIEWER")) {
+                Optional<User> reviewer = userRepository.findById(userId);
+                if (reviewer.isPresent()) {
+                    Set<Authority> authorities = new HashSet<>();
+                    authorityRepository.findById(AuthoritiesConstants.REVIEWER).ifPresent(authorities::add);
+                    authorityRepository.findById(AuthoritiesConstants.FACULTY).ifPresent(authorities::add);
+                    System.out.println("Authorities are ---> "+authorities);
+                    reviewer.get().setAuthorities(authorities);
+//                    course.get().setIsApproved(true);
+//                    CourseReviewStatus crs = course.get().getCourseReviewStatus();
+//                    crs.setStatus(true);
+//                    crs.setStatusUpdatedOn(LocalDate.now());
+//                    courseReviewStatusRepository.save(crs);
+//                    course.get().setCourseReviewStatus(crs);
+//                    course.get().setCourseApprovalDate(LocalDate.now());
+//                    System.out.println("Course Object is ---> "+course.get());
+//                    mailService.sendCourseApprovalMail(course.get());
+                    return userRepository.save(reviewer.get());
+                } else {
+                    log.warn("Reviewer not present");
+                    return null;
+                }
+            } else {
+                log.warn("You are not authorized");
+                return null;
+            }
+        } else {
+            log.warn("User not present");
+            return null;
+        }
+    }
+
+    @Override
+    public User removeReviewer(Long userId) {
+        log.debug("Request to remove reviewer  : {}", userId);
+
+        Optional<User> user = userService.getUserWithAuthorities();
+        if (user.isPresent()) {
+            String authority = user.get().getAuthorities().toString();
+            if (authority.contains("ROLE_ADMIN") || authority.contains("ROLE_REVIEWER")) {
+                Optional<User> reviewer = userRepository.findById(userId);
+                if (reviewer.isPresent()) {
+                    Set<Authority> authorities = new HashSet<>();
+//                    authorityRepository.findById(AuthoritiesConstants.REVIEWER).ifPresent(authorities::add);
+                    authorityRepository.findById(AuthoritiesConstants.FACULTY).ifPresent(authorities::add);
+//                    System.out.println("Authorities are ---> "+authorities);
+                    reviewer.get().setAuthorities(authorities);
+//                    course.get().setIsApproved(true);
+//                    CourseReviewStatus crs = course.get().getCourseReviewStatus();
+//                    crs.setStatus(true);
+//                    crs.setStatusUpdatedOn(LocalDate.now());
+//                    courseReviewStatusRepository.save(crs);
+//                    course.get().setCourseReviewStatus(crs);
+//                    course.get().setCourseApprovalDate(LocalDate.now());
+//                    System.out.println("Course Object is ---> "+course.get());
+//                    mailService.sendCourseApprovalMail(course.get());
+                    return userRepository.save(reviewer.get());
+                } else {
+                    log.warn("Reviewer not present");
+                    return null;
+                }
+            } else {
+                log.warn("You are not authorized");
+                return null;
+            }
+        } else {
+            log.warn("User not present");
+            return null;
+        }
+    }
 
 }

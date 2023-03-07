@@ -1,5 +1,6 @@
 package com.charusat.pacelearn.service.impl;
 
+import com.charusat.pacelearn.domain.AllCategories;
 import com.charusat.pacelearn.domain.Course;
 import com.charusat.pacelearn.domain.CourseCategory;
 import com.charusat.pacelearn.repository.CourseCategoryRepository;
@@ -15,10 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Service Implementation for managing {@link CourseCategory}.
@@ -143,5 +141,26 @@ public class CourseCategoryServiceImpl implements CourseCategoryService {
             map.put(category.getId(), courseCategoryRepository.getCourseCountByParentCategory(category.getId().intValue()));
         }
         return ResponseEntity.ok().body(map);
+    }
+
+    @Override
+    public ArrayList<AllCategories> getCategoriesWithItsSubcategories(){
+        ArrayList<AllCategories> allCategoriesResponse =new ArrayList<>();
+        List<CourseCategory> courseCategories = courseCategoryRepository.findCourseCategoryByIsParent(true);
+        List<CourseCategory> subCategories;
+        for (CourseCategory category:courseCategories) {
+            AllCategories allCategories=new AllCategories();
+                allCategories.setCourseCategoryTitle(category.getCourseCategoryTitle());
+                allCategories.setDescription(category.getDescription());
+                allCategories.setId(category.getId());
+                allCategories.setLogo(category.getLogo());
+                allCategories.setParentId(category.getParentId());
+                allCategories.setParent(category.getIsParent());
+                subCategories=courseCategoryRepository.findByParentId(category.getParentId());
+                allCategories.setSubCategories(subCategories);
+            allCategoriesResponse.add(allCategories);
+
+        }
+        return allCategoriesResponse;
     }
 }

@@ -175,12 +175,12 @@ public class CourseResource {
         //        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         //        return ResponseEntity.ok().body(list);
         List<Course> list = courseService.findAllOpen();
-        List<Course> listTop4 = list.subList(0,4);
-        System.out.println("HAHAHAH--> " + listTop4);
-        String customJSONResponse = "courses : "+listTop4;
+        List<Course> listLatest16 = list.subList(list.size()-16,list.size());
+        System.out.println("HAHAHAH--> " + listLatest16);
+        String customJSONResponse = "courses : "+listLatest16;
 //        return ResponseEntity.ok().body(listTop4);
         HashMap<String,List<Course>> map = new HashMap<>();
-        map.put("courses",listTop4);
+        map.put("courses",listLatest16);
         return ResponseEntity.ok().body(map);
     }
 

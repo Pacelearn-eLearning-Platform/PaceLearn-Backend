@@ -1,11 +1,15 @@
 package com.charusat.pacelearn.web.rest;
 
+import com.charusat.pacelearn.PacelearnApplication;
 import com.charusat.pacelearn.web.rest.errors.InvalidPasswordException;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.charusat.pacelearn.security.jwt.JWTFilter;
 import com.charusat.pacelearn.security.jwt.TokenProvider;
 import com.charusat.pacelearn.web.rest.vm.LoginVM;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -32,6 +36,8 @@ public class UserJWTController {
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
+    private final Logger log = LoggerFactory.getLogger(PacelearnApplication.class);
+
 
 //    private final AuthenticationManager authenticationManager;
 
@@ -48,12 +54,13 @@ public class UserJWTController {
      * @throws InvalidPasswordException {@code 400 (Bad Request)} if the password is incorrect.
      */
     @PostMapping("/authenticate")
-    public ResponseEntity<JWTToken> authorize(@Valid @RequestBody LoginVM loginVM){
+    public ResponseEntity<JWTToken> authorize(@Valid @RequestBody LoginVM loginVM, HttpServletRequest request){
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
             loginVM.getUsername(),
             loginVM.getPassword()
         );
 
+        log.info("/POST Request to for SIGNIN for USERNAME :  "+loginVM.getUsername());
 
         System.out.println("HAHA in authenticate api endpoint");
         System.out.println("USERNAME is --> "+ loginVM.getUsername());

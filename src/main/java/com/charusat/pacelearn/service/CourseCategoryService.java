@@ -1,5 +1,6 @@
 package com.charusat.pacelearn.service;
 
+import com.charusat.pacelearn.domain.AllCategories;
 import com.charusat.pacelearn.domain.Course;
 import com.charusat.pacelearn.domain.CourseCategory;
 import com.charusat.pacelearn.service.dto.CourseCategoryDTO;
@@ -7,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -61,6 +63,8 @@ public interface CourseCategoryService {
     Map<String, List<Course>> getCoursesBySubCategories();
 
     Map<String, List<CourseCategory>> getCourseSubCategoriesByParentCategories();
+
+    ArrayList<AllCategories> getCategoriesWithItsSubcategories();
 
     ResponseEntity<Map<Long, Integer>> getCourseCountBySubCategory(Long parentId);
 

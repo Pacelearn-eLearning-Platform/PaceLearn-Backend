@@ -19,7 +19,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/admin")
-@PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+//@PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
 public class AdminResourseCustom {
 
     private final Logger log = LoggerFactory.getLogger(AdminResourseCustom.class);
@@ -178,4 +178,30 @@ public class AdminResourseCustom {
 //                .body(result);
     }
 
+
+    /**
+     *  /GET Request for open data for banner in home page (partially same as /coreMetaData)
+     */
+    /**
+     *
+     * {@code GET  /openMetaData} : Get the core meta data of the platform for dashboard
+     *
+     */
+    @GetMapping("/openMetaData")
+    public ResponseEntity<Map<String,Long>> getOpenMetaData(){
+        log.info("REST request to get the Open meta data for Home page Banner : {}");
+        HashMap<String,Long> body = new HashMap<>();
+
+        Long students = Long.valueOf(userRepository.countAllByAuthoritiesContains("ROLE_STUDENT"));
+        Long approvedCourses = Long.valueOf(courseRepository.countCoursesByIsApproved(true));
+        Long approvalPendingCourses = Long.valueOf(courseRepository.countCoursesByIsApproved(false));
+        Long totalCourses = approvedCourses+approvalPendingCourses;
+
+        body.put("students",students);
+        body.put("totalCourses",totalCourses);
+
+        return  ResponseEntity.ok(body);
+
+
+    }
 }

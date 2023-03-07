@@ -375,7 +375,7 @@ public class CourseServiceImpl implements CourseService {
             }
         } else {
             System.out.println("Inside ELse part");
-            return null;
+            return courseRepository.findAllByIsApproved(true);
         }
     }
 

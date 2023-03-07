@@ -110,6 +110,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/course-category/**").permitAll()
             .antMatchers("/api/courses/**").permitAll()
             .antMatchers("/api/course/**").permitAll()
+                .antMatchers("/api/admin/openMetaData").permitAll()
+//            .antMatchers("/api/admin/**").permitAll()
             .antMatchers("/api/admin/**").hasAuthority(AuthoritiesConstants.ADMIN)
 //            .antMatchers("/api/**").authenticated()
             .antMatchers("/api/**").permitAll()

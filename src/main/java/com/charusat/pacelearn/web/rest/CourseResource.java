@@ -176,8 +176,9 @@ public class CourseResource {
         //        return ResponseEntity.ok().body(list);
         List<Course> list = courseService.findAllOpen();
         List<Course> listLatest16 = list.subList(list.size()-16,list.size());
-        System.out.println("HAHAHAH--> " + listLatest16);
+//        System.out.println("HAHAHAH--> " + listLatest16);
         String customJSONResponse = "courses : "+listLatest16;
+        Collections.reverse(listLatest16);
 //        return ResponseEntity.ok().body(listTop4);
         HashMap<String,List<Course>> map = new HashMap<>();
         map.put("courses",listLatest16);

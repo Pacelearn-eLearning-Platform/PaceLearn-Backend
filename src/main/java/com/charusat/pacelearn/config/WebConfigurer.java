@@ -93,7 +93,7 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
         config.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS", "DELETE", "PUT", "PATCH"));
         config.setAllowedHeaders(Arrays.asList("X-Requested-With", "Origin", "Content-Type", "Accept", "Authorization"));
         config.setAllowCredentials(true);
-        System.out.println("HAHA in cors filter");
+//        System.out.println("HAHA in cors filter");
         if (!CollectionUtils.isEmpty(config.getAllowedOrigins()) || !CollectionUtils.isEmpty(config.getAllowedOriginPatterns())) {
             log.debug("Registering CORS filter");
             source.registerCorsConfiguration("/api/**", config);

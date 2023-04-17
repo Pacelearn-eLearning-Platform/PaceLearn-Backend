@@ -68,7 +68,7 @@ public class CourseServiceImpl implements CourseService {
         if (course.getCourseCreatedOn() == null) {
             course.setCourseCreatedOn(LocalDate.now());
         }
-        System.out.println("Insisde COurse creation implementation");
+//        System.out.println("Insisde COurse creation implementation");
         course.setIsApproved(false);
         course.isPublished(false);
         course.setIsDraft(true);
@@ -209,10 +209,10 @@ public class CourseServiceImpl implements CourseService {
             for (Course course : courses) {
                 courseDTO = new CourseDTO(courseMapper.toDto(course));
                 if (course.getEnrolledUsersLists().contains(user.get())) {
-                    System.out.println("HAHAHAHAHAHAHA  --> " + course.getEnrolledUsersLists());
+//                    System.out.println("HAHAHAHAHAHAHA  --> " + course.getEnrolledUsersLists());
                     courseDTO.setEnrolled(true);
                 } else {
-                    System.out.println("HAHAHAHAHAHAHA2  --> " + course.getEnrolledUsersLists());
+//                    System.out.println("HAHAHAHAHAHAHA2  --> " + course.getEnrolledUsersLists());
                     courseDTO.setEnrolled(false);
                 }
 //                courseDTO.setMinStudents(course.getMinStudents() + getStudentEnrolledCountByCourse(course.getId()).getBody());
@@ -295,7 +295,7 @@ public class CourseServiceImpl implements CourseService {
     public ResponseEntity enrollInCourse(String courseId) {
         AtomicBoolean flag = new AtomicBoolean(false);
         Map<String, String> body = new HashMap<>();
-        System.out.println("In enrollInCourse function");
+//        System.out.println("In enrollInCourse function");
         body.put("Success", "Data Entered Successfully");
         try {
             courseRepository
@@ -306,7 +306,7 @@ public class CourseServiceImpl implements CourseService {
                         userService.getUserWithAuthorities().isPresent() &&
                         !alreadyEnrolledUsers.contains(userService.getUserWithAuthorities().get())
                     ) {
-                        System.out.println("I am in if part");
+//                        System.out.println("I am in if part");
                         alreadyEnrolledUsers.add(userService.getUserWithAuthorities().get());
                         flag.set(true);
                     }
@@ -314,13 +314,13 @@ public class CourseServiceImpl implements CourseService {
                 })
                 .map(courseRepository::save);
             if (flag.get()) return ResponseEntity.ok().body(body); else {
-                System.out.println("Inside else part of enrolledCourses function");
+//                System.out.println("Inside else part of enrolledCourses function");
                 HashMap<String,String> errorbody = new HashMap<>();
                 body.put("status","Already enrolled");
                 return ResponseEntity.badRequest().body(errorbody);
             }
         } catch (Exception e) {
-            System.out.println("Error in enrolledCourses is --> "+ e);
+//            System.out.println("Error in enrolledCourses is --> "+ e);
             return ResponseEntity.status(500).build();
         }
     }
@@ -362,7 +362,7 @@ public class CourseServiceImpl implements CourseService {
         Optional<User> user = userService.getUserWithAuthorities();
         if (user.isPresent()) {
             String authority = user.get().getAuthorities().toString();
-            System.out.println("HAHAHAH");
+//            System.out.println("HAHAHAH");
             if (authority.contains(AuthoritiesConstants.ADMIN)) {
                 return courseRepository.findAll();
             } else if (authority.contains(AuthoritiesConstants.FACULTY)) {
@@ -396,7 +396,7 @@ public class CourseServiceImpl implements CourseService {
 //                    courseReviewStatusRepository.save(crs);
 //                    course.get().setCourseReviewStatus(crs);
                     course.get().setCourseApprovalDate(LocalDate.now());
-                    System.out.println("Course Object is ---> "+course.get());
+//                    System.out.println("Course Object is ---> "+course.get());
                     mailService.sendCourseApprovalMail(course.get());
                     return courseRepository.save(course.get());
                 } else {
@@ -432,7 +432,7 @@ public class CourseServiceImpl implements CourseService {
 //                    course.get().setCourseReviewStatus(crs);
 //                    course.get().setCourseApprovalDate(LocalDate.now());
                     course.get().setCourseUpdatedOn(LocalDate.now());
-                    System.out.println("Course Object is ---> "+course.get());
+//                    System.out.println("Course Object is ---> "+course.get());
                     mailService.sendCourseDisApprovalMail(course.get());
                     return courseRepository.save(course.get());
                 } else {
@@ -462,7 +462,7 @@ public class CourseServiceImpl implements CourseService {
                     Set<Authority> authorities = new HashSet<>();
                     authorityRepository.findById(AuthoritiesConstants.REVIEWER).ifPresent(authorities::add);
                     authorityRepository.findById(AuthoritiesConstants.FACULTY).ifPresent(authorities::add);
-                    System.out.println("Authorities are ---> "+authorities);
+//                    System.out.println("Authorities are ---> "+authorities);
                     reviewer.get().setAuthorities(authorities);
 //                    course.get().setIsApproved(true);
 //                    CourseReviewStatus crs = course.get().getCourseReviewStatus();

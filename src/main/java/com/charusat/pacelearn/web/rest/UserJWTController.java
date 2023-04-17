@@ -62,16 +62,16 @@ public class UserJWTController {
 
         log.info("/POST Request to for SIGNIN for USERNAME :  "+loginVM.getUsername());
 
-        System.out.println("HAHA in authenticate api endpoint");
-        System.out.println("USERNAME is --> "+ loginVM.getUsername());
-        System.out.println("Token is is --> "+ authenticationToken);
+//        System.out.println("HAHA in authenticate api endpoint");
+//        System.out.println("USERNAME is --> "+ loginVM.getUsername());
+//        System.out.println("Token is is --> "+ authenticationToken);
 //        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        System.out.println("HAHA in authenticate api endpoint1");
+//        System.out.println("HAHA in authenticate api endpoint1");
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        System.out.println("HAHA in authenticate api endpoint2");
+//        System.out.println("HAHA in authenticate api endpoint2");
         String jwt = tokenProvider.createToken(authentication, loginVM.isRememberMe());
-        System.out.println("HAHA in authenticate api endpoint3");
+//        System.out.println("HAHA in authenticate api endpoint3");
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 //        httpHeaders.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,"http://localhost:3000");

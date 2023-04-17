@@ -119,7 +119,7 @@ public class CourseSectionServiceImpl implements CourseSectionService {
         if (course.isPresent() && course.get().getUser().getId().equals(user.get().getId())) {
             CourseSection courseSection = new CourseSection(courseSectionDTO);
 //            courseSection.course(course.get());
-            System.out.println("Inside if part of save method");
+//            System.out.println("Inside if part of save method");
             courseSection.course(courseMapper.toEntity(course.get()));
             courseSection.isDraft(false);
             courseSection.sectionOrder(courseSectionRepository.findCourseSectionByCourse_Id(courseId).size() + 1);

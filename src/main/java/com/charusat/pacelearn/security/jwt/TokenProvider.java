@@ -64,7 +64,7 @@ public class TokenProvider {
 
     public String createToken(Authentication authentication, boolean rememberMe) {
         String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
-        System.out.println("AUthorities are --> " + authorities);
+//        System.out.println("AUthorities are --> " + authorities);
         long now = (new Date()).getTime();
         Date validity;
         if (rememberMe) {

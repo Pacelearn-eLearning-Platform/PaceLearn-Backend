@@ -122,7 +122,7 @@ public class CourseSessionServiceImpl implements CourseSessionService {
      *  Author : Kirtan Shah
      */
     public CourseSession save(Long courseId, CourseSessionDTOManual courseSessionDTOManual) throws IOException {
-        System.out.println(courseSessionDTOManual.getSessionVideo());
+//        System.out.println(courseSessionDTOManual.getSessionVideo());
         Optional<User> user = userService.getUserWithAuthorities();
         //        Checking if user is present
         if (user.isPresent()) {
@@ -133,7 +133,7 @@ public class CourseSessionServiceImpl implements CourseSessionService {
                 //                Checking if courseSection is present and if the courseSection is part of the course.
                 if (courseSection.isPresent() && courseSection.get().getCourse().equals(course.get())) {
                     CourseSession courseSession = new CourseSession(courseSessionDTOManual);
-                    System.out.println(courseSessionDTOManual.getSessionVideo());
+//                    System.out.println(courseSessionDTOManual.getSessionVideo());
                     //courseSession.setSessionVideo(compressAndUpload(courseSessionDTO.getSessionVideo()));
                     courseSession.setSessionVideo(courseSessionDTOManual.getSessionVideo());
                     courseSession.setCourseSection(courseSectionMapper.toEntity(courseSection.get()));
@@ -158,7 +158,7 @@ public class CourseSessionServiceImpl implements CourseSessionService {
                     if (courseSessionDTOManual.getIsPreview() == null) {
                         courseSession.setIsPreview(false);
                     }
-                    System.out.println("Section is --> "+courseSessionDTOManual.getSectionId().longValue());
+//                    System.out.println("Section is --> "+courseSessionDTOManual.getSectionId().longValue());
                     courseSession.sessionOrder(courseSessionRepository.findAllByCourseSection_Id(courseSessionDTOManual.getSectionId().longValue()).size() + 1);
                     return courseSessionRepository.save(courseSession);
                 } else {

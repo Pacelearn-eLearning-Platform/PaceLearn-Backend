@@ -187,7 +187,7 @@ public class AccountResource {
         Optional<User> u1 = userRepository.findOneByEmailIgnoreCase(mail);
         if (u1.isPresent()) {
             String username = u1.get().getLogin();
-            System.out.println("Username in findUsername is -->" + username);
+//            System.out.println("Username in findUsername is -->" + username);
             String messageForMail =
                 "Hello Student , \n" +
                 "Your username for Assignment Web Application is " +
@@ -215,7 +215,7 @@ public class AccountResource {
     @PostMapping(path = "/account/reset-password/init")
     public void requestPasswordReset(@RequestParam("mail") String mail) {
         Optional<User> user = userService.requestPasswordReset(mail);
-        System.out.println("Requested email is --> "+mail);
+//        System.out.println("Requested email is --> "+mail);
         if (user.isPresent()) {
             mailService.sendPasswordResetMail(user.get());
         } else {

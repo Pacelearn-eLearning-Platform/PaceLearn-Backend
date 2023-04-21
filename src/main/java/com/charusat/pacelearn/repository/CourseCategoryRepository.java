@@ -21,9 +21,7 @@ public interface CourseCategoryRepository extends JpaRepository<CourseCategory, 
     List<CourseCategory> findParentCategory();
 
     @Query(
-        value = "SELECT course_category from CourseCategory course_category where course_category.parentId = :id and course_category.id in (" +
-        "select course.courseCategory.id from Course course" +
-        ") order by course_category.courseCategoryTitle"
+        value = "SELECT course_category from CourseCategory course_category where course_category.parentId = :id and course_category.isParent = false order by course_category.courseCategoryTitle "
     )
     List<CourseCategory> findByParentId(@Param("id") Integer id);
 

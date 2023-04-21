@@ -41,3 +41,4 @@ build/
 /src/main/resources/i18n/messages_en.properties
 /src/main/java/com/charusat/pacelearn/web/rest/UserJWTController.java
 /src/main/java/com/charusat/pacelearn/config/WebConfigurer.java
+/src/main/java/com/charusat/pacelearn/service/MailService.java

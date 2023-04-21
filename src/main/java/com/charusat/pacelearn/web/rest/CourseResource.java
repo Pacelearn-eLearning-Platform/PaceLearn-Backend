@@ -195,6 +195,7 @@ public class CourseResource {
         //        CourseCriteria criteria
         //        @org.springdoc.api.annotations.ParameterObject Pageable pageable
     ) {
+        System.out.println("");
         //        log.debug("REST request to get Courses by criteria: {}", criteria);
         //        List<CourseDTO> list = courseService.findAllByCurrentSemester();
         //        List<CourseDTO> list = courseQueryService.findByCriteria(criteria);

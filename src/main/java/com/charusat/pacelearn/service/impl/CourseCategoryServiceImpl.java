@@ -159,7 +159,6 @@ public class CourseCategoryServiceImpl implements CourseCategoryService {
                 subCategories=courseCategoryRepository.findByParentId(category.getParentId());
                 allCategories.setSubCategories(subCategories);
             allCategoriesResponse.add(allCategories);
-
         }
         return allCategoriesResponse;
     }

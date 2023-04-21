@@ -16,11 +16,7 @@ import java.util.List;
 @Repository
 public interface CourseCategoryRepository extends JpaRepository<CourseCategory, Long>, JpaSpecificationExecutor<CourseCategory> {
     @Query(
-        value = "select course_category from CourseCategory course_category where course_category.isParent = true and course_category.parentId in (" +
-        "select course_category.parentId from CourseCategory course_category where course_category.id in (" +
-        "select course.courseCategory.id from Course course" +
-        ")" +
-        ") order by course_category.courseCategoryTitle"
+        value = "SELECT course_category from CourseCategory course_category where course_category.isParent = true order by course_category.courseCategoryTitle"
     )
     List<CourseCategory> findParentCategory();
 

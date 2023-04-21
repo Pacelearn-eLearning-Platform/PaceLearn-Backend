@@ -33,3 +33,11 @@ build/
 .vscode/
 /src/main/resources/application.properties
 /mylog.txt
+/src/main/resources/logback.xml
+/src/main/resources/templates/mail/activationEmail.html
+/src/main/resources/templates/mail/creationEmail.html
+/src/main/resources/templates/mail/passwordResetEmail.html
+/src/main/resources/i18n/messages.properties
+/src/main/resources/i18n/messages_en.properties
+/src/main/java/com/charusat/pacelearn/web/rest/UserJWTController.java
+/src/main/java/com/charusat/pacelearn/config/WebConfigurer.java
